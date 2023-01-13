@@ -3,6 +3,7 @@ package provider
 import (
 	"context"
 	"github.com/selefra/selefra-provider-zoom/constants"
+	"os"
 
 	"github.com/selefra/selefra-provider-sdk/provider"
 	"github.com/selefra/selefra-provider-sdk/provider/schema"
@@ -27,6 +28,22 @@ func GetProvider() *provider.Provider {
 				}
 				if len(zoomConfig.Providers) == 0 {
 					zoomConfig.Providers = append(zoomConfig.Providers, zoom_client.Config{})
+				}
+
+				if zoomConfig.Providers[0].APIKey == "" {
+					zoomConfig.Providers[0].APIKey = os.Getenv("ZOOM_API_KEY")
+				}
+
+				if zoomConfig.Providers[0].APIKey == "" {
+					return nil, schema.NewDiagnostics().AddErrorMsg("missing APIKey in configuration")
+				}
+
+				if zoomConfig.Providers[0].APISecret == "" {
+					zoomConfig.Providers[0].APISecret = os.Getenv("ZOOM_API_SECRET")
+				}
+
+				if zoomConfig.Providers[0].APISecret == "" {
+					return nil, schema.NewDiagnostics().AddErrorMsg("missing APISecret in configuration")
 				}
 
 				clients, err := zoom_client.NewClients(zoomConfig)
