@@ -66,7 +66,7 @@ func GetProvider() *provider.Provider {
 		},
 		ConfigMeta: provider.ConfigMeta{
 			GetDefaultConfigTemplate: func(ctx context.Context) string {
-				return `##  Optional, Repeated. Add an accounts block for every account you want to assume-role into and fetch data from.
+				return `## Optional, Repeated. Add an accounts block for every account you want to assume-role into and fetch data from.
 # api_key: <Your Zoom Api Key>
 # api_secret: <Your Zoom Api Secret>`
 			},
